@@ -1,35 +1,40 @@
 from operator import itemgetter
+from os import SEEK_CUR
 from struct import pack
 
 from common import max_steps, preamble_fmt, word_sizes
 
 
-def get_word(buf, pos, size):
-    return (pos+size <= len(buf)) and buf[pos:pos+size] or None
+def get_words(f, sizes):
+    initial_pos = f.pos
+    w = f.read(max(sizes))
+    print "File %s [%d] --> read word: %s (%d)" % (f, f.pos, w, max(sizes))
+    f.seek(initial_pos)
+    return map(lambda s: len(w) >= s and w[:s] or None, sizes)
 
 
-def count_head(buf, pos, w):
+def count_head(f, w):
     if not w:
         return 0
-    initial_pos = pos
+    initial_pos = f.pos
     size = len(w)
     steps = 0
-    while (buf[pos:pos+size] == w) and (steps < max_steps):
+    while (f.read(size) == w) and (steps < max_steps):
         steps += 1
-        pos += size
-    return pos-initial_pos
+    f.seek(initial_pos)
+    return steps*size
 
 
-def encode(buf):
+def encode(f_in, f_out):
     """Apply FlexRLE runlength encoding"""
-    out = ''
-    pos = 0
-    while pos < len(buf):
-        words = {b: get_word(buf, pos, s) for (b, s) in word_sizes.items()}
-        head = {b: count_head(buf, pos, words[b]) for b in word_sizes}
+    while True:
+        words = dict(zip(word_sizes.keys(),
+                         get_words(f_in, word_sizes.values())))
+        if words.values()[0] is None:
+            break  # end of data: could not read the smallest sized word
+        head = {code: count_head(f_in, words[code]) for code in word_sizes}
         (code, jmp) = max(head.items(), key=itemgetter(1))
-        word_size = word_sizes[code]
-        out += pack(preamble_fmt, (code << 13) | ((jmp & 0xFFFF) >> code))
-        out += buf[pos:pos+word_size]
-        pos += jmp
-    return out
+        f_in.seek(jmp, SEEK_CUR)
+        f_out.write(pack(preamble_fmt,
+                         (code << 13) | ((jmp & 0xFFFF) >> code)))
+        f_out.write(words[code])
