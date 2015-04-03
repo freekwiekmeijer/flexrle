@@ -20,4 +20,12 @@ The encoding of a word is as follows:
   - 13 bits (lsb) indicating the number of repetitions
 + w: to-be-repeated data word, size in bytes according to the preamble
 
+## Usage
 
++ As python module
++ From command line
+
+## Current limitations
+
++ Only words with size 1,2,4 and 8 are encoded. Support for longer words not yet implemented.
++ Encoder does not implement anything beyond a simple local optimization.
