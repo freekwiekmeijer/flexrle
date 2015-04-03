@@ -1,7 +1,7 @@
 from operator import itemgetter
 from struct import pack
 
-from common import preamble_fmt, word_sizes
+from common import max_steps, preamble_fmt, word_sizes
 
 
 def get_word(buf, pos, size):
@@ -12,7 +12,9 @@ def count_head(buf, pos, w):
         return 0
     initial_pos = pos
     size = len(w)
-    while buf[pos:pos+size] == w:
+    steps = 0
+    while (buf[pos:pos+size] == w) and (steps < max_steps):
+        steps += 1
         pos += size
     return pos-initial_pos
 
