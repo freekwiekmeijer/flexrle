@@ -1,8 +1,11 @@
+#!/usr/bin/env python
+
 from operator import itemgetter
 from os import SEEK_CUR
 from struct import pack
 
 from common import max_steps, preamble_fmt, word_sizes
+from shell import run_from_shell
 
 
 def get_words(f, sizes):
@@ -37,3 +40,7 @@ def encode(f_in, f_out):
         f_out.write(pack(preamble_fmt,
                          (code << 13) | ((jmp & 0xFFFF) >> code)))
         f_out.write(words[code])
+
+
+if __name__ == "__main__":
+    run_from_shell(encode)

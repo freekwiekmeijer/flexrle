@@ -1,6 +1,9 @@
+#!/usr/bin/env python
+
 from struct import unpack
 
 from common import preamble_fmt, preamble_size, word_sizes
+from shell import run_from_shell
 
 
 def decode(f_in, f_out):
@@ -18,3 +21,7 @@ def decode(f_in, f_out):
             break
         for i in xrange(word_repetitions):
             f_out.write(w)
+
+
+if __name__ == "__main__":
+    run_from_shell(decode)
