@@ -1,4 +1,4 @@
-# flexrle.
+# flexrle
 
 Implements encoding and decoding functionality according to FlexRLE runlength coder.
 
@@ -22,10 +22,21 @@ The encoding of a word is as follows:
 
 ## Usage
 
-+ As python module
-+ From command line
++ As python module:
+
+```
+>>> from flexrle import encode, decode
+>>> encode(open("source_file", "rb"), open("compressed_file.rle", "w+b"))
+>>> decode(open("compressed_file.rle", "rb"), open("uncompressed_file", "w+b"))
+```
+
++ From command line:
+```
+$ python flexrle/encode.py source_file compressed_file.rle
+$ python flexrle/decode.py compressed_file.rle uncompressed_file
+```
 
 ## Current limitations
 
-+ Only words with size 1,2,4 and 8 are encoded. Support for longer words not yet implemented.
++ Only words with size 1, 2, 4 and 8 are encoded. Support for longer words not yet implemented.
 + Encoder does not implement anything beyond a simple local optimization.
