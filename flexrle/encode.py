@@ -28,6 +28,6 @@ def encode(buf):
         (code, jmp) = max(head.items(), key=itemgetter(1))
         word_size = word_sizes[code]
         out += pack(preamble_fmt, (code << 13) | ((jmp & 0xFFFF) >> code))
-        out += buf[pos:word_size]
+        out += buf[pos:pos+word_size]
         pos += jmp
     return out
