@@ -6,7 +6,6 @@ from common import preamble_fmt, preamble_size, word_sizes
 def decode(f_in, f_out):
     """Apply FlexRLE runlength decoding"""
     while True:
-        print f_in.pos
         p = f_in.read(preamble_size)
         if len(p) < preamble_size:
             break

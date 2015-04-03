@@ -6,9 +6,8 @@ from common import max_steps, preamble_fmt, word_sizes
 
 
 def get_words(f, sizes):
-    initial_pos = f.pos
+    initial_pos = f.tell()
     w = f.read(max(sizes))
-    print "File %s [%d] --> read word: %s (%d)" % (f, f.pos, w, max(sizes))
     f.seek(initial_pos)
     return map(lambda s: len(w) >= s and w[:s] or None, sizes)
 
@@ -16,7 +15,7 @@ def get_words(f, sizes):
 def count_head(f, w):
     if not w:
         return 0
-    initial_pos = f.pos
+    initial_pos = f.tell()
     size = len(w)
     steps = 0
     while (f.read(size) == w) and (steps < max_steps):
