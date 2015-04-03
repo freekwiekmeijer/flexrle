@@ -19,8 +19,6 @@ def run_from_shell(func):
     dst_file = argv[2]
     if not path.isfile(src_file):
         print_usage("Source file does not exist")
-    if path.exists(dst_file):
-        print_usage("Destination file already exists")
 
     f_in = open(src_file, "rb")
     f_out = open(dst_file, "w+b")
