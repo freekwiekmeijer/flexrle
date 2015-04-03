@@ -7,6 +7,7 @@ from common import max_steps, preamble_fmt, word_sizes
 def get_word(buf, pos, size):
     return (pos+size <= len(buf)) and buf[pos:pos+size] or None
 
+
 def count_head(buf, pos, w):
     if not w:
         return 0
@@ -18,12 +19,13 @@ def count_head(buf, pos, w):
         pos += size
     return pos-initial_pos
 
+
 def encode(buf):
     """Apply FlexRLE runlength encoding"""
     out = ''
     pos = 0
     while pos < len(buf):
-        words = {b: get_word(buf, pos, s) for (b,s) in word_sizes.items()}
+        words = {b: get_word(buf, pos, s) for (b, s) in word_sizes.items()}
         head = {b: count_head(buf, pos, words[b]) for b in word_sizes}
         (code, jmp) = max(head.items(), key=itemgetter(1))
         word_size = word_sizes[code]
