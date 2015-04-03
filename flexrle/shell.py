@@ -3,8 +3,9 @@ from os import path, SEEK_END
 from sys import argv, exit, stderr
 
 
-def print_usage(e = None):
-    msg = "Usage: %s <source file> <destination file>\n" % path.basename(argv[0])
+def print_usage(e=None):
+    msg = "Usage: %s <source file> <destination file>\n" % \
+          path.basename(argv[0])
     if e:
         msg = "Error: %s\n" % e + msg
     stderr.write(msg)
@@ -14,15 +15,12 @@ def print_usage(e = None):
 def run_from_shell(func):
     if len(argv) < 3:
         print_usage()
-
     src_file = argv[1]
     dst_file = argv[2]
-
     if not path.isfile(src_file):
         print_usage("Source file does not exist")
     if path.exists(dst_file):
         print_usage("Destination file already exists")
-
 
     f_in = open(src_file, "rb")
     f_out = open(dst_file, "w+b")
