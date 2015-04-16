@@ -10,14 +10,15 @@ The encoding of a word is as follows:
 `
 [p(2) w(1 ... 8)]
 `
-+ p: preamble (16 bits, Big-endian/NBO): `sssn nnnn  nnnn nnnn`
-  - 3 bits (msb) indicating the size of the following word; size := 2^x
++ p: preamble (16 bits, Big-endian/NBO): `cccn nnnn  nnnn nnnn`
+  - c: 3 bits (msb) indicating the size of the following word; size := 2^x
     - 0: 1 (int8)
     - 1: 2 (int16)
     - 2: 4 (int32)
     - 3: 8 (int64)
-    - ...
-  - 13 bits (lsb) indicating the number of repetitions
+    - 4 ... 6: reserved for future use
+    - 7: raw sequence (indicates nr bytes to follow)
+  - n: 13 bits (lsb) indicating the number of repetitions
 + w: to-be-repeated data word, size in bytes according to the preamble
 
 ## Usage
@@ -38,5 +39,4 @@ $ python flexrle/decode.py compressed_file.rle uncompressed_file
 
 ## Current limitations
 
-+ Only words with size 1, 2, 4 and 8 are encoded. Support for longer words not yet implemented.
 + Encoder does not implement anything beyond a simple local optimization.

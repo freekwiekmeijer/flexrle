@@ -36,5 +36,5 @@ setup(
     packages=find_packages(),
     platforms='any',
     url='http://github.com/freekwiekmeijer/flexrle',
-    version='0.0.1',
+    version='0.0.2',
 )

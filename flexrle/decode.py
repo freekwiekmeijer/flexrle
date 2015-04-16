@@ -14,8 +14,16 @@ def decode(f_in, f_out):
             break
         p = unpack(preamble_fmt, p)[0]
         code = (p & 0xE000) >> 13
-        word_size = word_sizes[code]
-        word_repetitions = p & 0x1FFF
+
+        if code == 7:
+            # special case: raw data, n bytes
+            word_size = word_repetitions
+            word_repetitions = 1
+        else:
+            # default case: word size = 2^c, repetitions = n
+            word_size = word_sizes[code]
+            word_repetitions = p & 0x1FFF
+
         w = f_in.read(word_size)
         if len(w) < word_size:
             break

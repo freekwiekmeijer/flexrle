@@ -4,6 +4,7 @@ __pycache__
 .cache
 .coverage
 .coverage-html
+.idea
 .tox
 *.egg-info
 _build
